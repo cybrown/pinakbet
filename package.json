@@ -1,12 +1,21 @@
 {
   "name": "pinakbet",
+  "version": "0.0.9",
   "description": "A starter kit to get you up and running with TypeScript, using Bublé as the ES2015 compiler ",
   "main": "index.js",
   "jsnext:main": "dist/pinakbet.js",
   "scripts": {
     "test": "gulp test",
+    "watch": "gulp watch:browser",
     "build": "gulp build",
-    "lint": "gulp lint"
+    "build:prod": "gulp build:prod",
+    "build:dev": "gulp build:dev",
+    "lint": "gulp lint",
+    "lint:src": "gulp lint:src",
+    "lint:test": "gulp lint:test",
+    "dependencies:check": "ncu",
+    "dependencies:upgrade": "ncu -u",
+    "postpublish": "git push origin master --follow-tags"
   },
   "keywords": [
     "typescript",
@@ -35,7 +44,7 @@
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^2.0.0-alpha",
     "karma": "^0.13.22",
-    "karma-chrome-launcher": "^0.2.3",
+    "karma-chrome-launcher": "^2.0.3",
     "karma-coverage": "^1.0.0",
     "karma-chai": "^0.1.0",
     "karma-mocha": "^1.0.1",
@@ -52,7 +61,6 @@
     "mkdirp": "^0.5.1",
     "chai": "^3.5.0",
     "del": "^2.2.0",
-    "eslint": "^2.10.2",
     "glob": "^7.0.3",
     "mocha": "^2.5.3",
     "npm-check-updates": "^2.6.5",

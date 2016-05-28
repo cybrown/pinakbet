@@ -152,6 +152,14 @@ gulp.task('lint:src', function() {
 		}));
 });
 
+gulp.task('watch:browser', function(done) {
+	process.env.NODE_ENV = 'test';
+	new karma.Server({
+		configFile: karmaConfig,
+		browsers: ['Chrome']
+	}, done).start();
+});
+
 gulp.task('lint', ['lint:src', 'lint:test']);
 gulp.task('build', ['build:prod', 'build:dev']);
 gulp.task('default', ['build']);
