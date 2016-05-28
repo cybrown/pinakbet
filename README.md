@@ -38,5 +38,6 @@ $ npm run build                 # Build a minified and a non-minified version of
 * `npm run lint:src` - lint the source
 * `npm run lint:tests` - lint the unit tests
 * `npm run test` - runs unit tests for both node and the browser. With Karma as the test runner
+* `npm run watch` - run all unit tests and watch files for changes
 * `npm run dependencies:check` - shows a list over dependencies with a higher version number then the current one - if any
 * `npm run dependencies:upgrade` - automatically upgrade all devDependencies & dependencies, and update package.json
