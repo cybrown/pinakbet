@@ -11,6 +11,9 @@ const buble = require('rollup-plugin-buble');
 const multiEntry = require('rollup-plugin-multi-entry').default;
 const typeScript = require('rollup-plugin-typescript');
 const nodeResolve = require('rollup-plugin-node-resolve');
+const filesize = require('rollup-plugin-filesize');
+const commonjs = require('rollup-plugin-commonjs');
+const replace = require('rollup-plugin-replace');
 const karma = require('karma');
 const tsc = require('typescript');
 const tslint = require('gulp-tslint');
@@ -22,13 +25,35 @@ const karmaConfig = path.resolve('config/karma.conf.js');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 
+/*
+ * Banner
+ **/
+const copyright =
+	'/*!\n' +
+	' * ' + pkg.name + ' v' + pkg.version + '\n' +
+	' * (c) ' + new Date().getFullYear() + ' ' + pkg.author.name + '\n' +
+	' * Released under the ' + pkg.license + ' License.\n' +
+	' */';
+
+
 function bundle(format, entry) {
 	return rollup({
 		entry: entry,
+		sourceMap: false,
+		banner: copyright,
 		plugins: [
 			process.env.min === 'true' ? uglify({
-				output: { comments: /@license/ },
-				compress: { keep_fargs: false }
+				warnings: false,
+				compress: {
+					screw_ie8: true,
+					dead_code: true,
+					unused: true,
+					keep_fargs: false,
+					drop_debugger: true
+				},
+				mangle: {
+					screw_ie8: true
+				}
 			}) : {},
 			typeScript(
 				Object.assign(tsConfig.compilerOptions, {
@@ -38,19 +63,35 @@ function bundle(format, entry) {
 					declaration: false
 				})
 			),
-			buble({})
+			buble({}),
+			nodeResolve({
+				// use "jsnext:main" if possible
+				// – see https://github.com/rollup/rollup/wiki/jsnext:main
+				jsnext: true,
+				// use "main" field or index.js, even if it's not an ES6 module
+				// (needs to be converted from CommonJS to ES6
+				// – see https://github.com/rollup/rollup-plugin-commonjs
+				main: true,
+				// if there's something your bundle requires that you DON'T
+				// want to include, add it to 'skip'
+				skip: [],
+				// some package.json files have a `browser` field which
+				// specifies alternative files to load for people bundling
+				// for the browser. If that's you, use this option, otherwise
+				// pkg.browser will be ignored
+				browser: true
+			}),
+			commonjs(),
+			filesize(),
+			replace({
+				'process.env.NODE_ENV': JSON.stringify('production'),
+				VERSION: pkg.version
+			})
 		],
 		format: format,
-		moduleName: 'Sonai'
+		moduleName: pkg.name[0].toUpperCase() + pkg.name.slice(1)
 	});
 }
-function cleanTmp(done) {
-	del(['tmp']).then(function() { done()});
-}
-
-// Remove our temporary files
-gulp.task('clean:tmp', cleanTmp);
-
 
 var firstBuild = true;
 
@@ -78,7 +119,7 @@ gulp.task('browser', ['clean:tmp'], function(done) {
 	}).then(function(bundle) {
 		const result = bundle.generate({
 			format: 'umd',
-			moduleName: 'Sonai',
+			moduleName: pkg.name[0].toUpperCase() + pkg.name.slice(1),
 			sourceMap: 'inline',
 			sourceMapSource: 'index.js',
 			sourceMapFile: pkg.name + '.js'
@@ -108,6 +149,26 @@ gulp.task('test:browser', function(done) {
 			configFile: karmaConfig,
 			singleRun: true,
 			browsers: ['Chrome']
+		}, done).start();
+	}
+);
+
+gulp.task('test:chrome', function(done) {
+		process.env.NODE_ENV = 'test';
+		new karma.Server({
+			configFile: karmaConfig,
+			singleRun: true,
+			browsers: ['Chrome']
+		}, done).start();
+	}
+);
+
+gulp.task('test:phantom', function(done) {
+		process.env.NODE_ENV = 'test';
+		new karma.Server({
+			configFile: karmaConfig,
+			singleRun: true,
+			browsers: ['PhantomJS']
 		}, done).start();
 	}
 );
@@ -152,12 +213,27 @@ gulp.task('lint:src', function() {
 		}));
 });
 
-gulp.task('watch:browser', function(done) {
+gulp.task('watch:browser', ['watch:chrome', 'watch:phantom']);
+
+gulp.task('watch:chrome', function(done) {
 	process.env.NODE_ENV = 'test';
 	new karma.Server({
 		configFile: karmaConfig,
 		browsers: ['Chrome']
 	}, done).start();
+});
+
+gulp.task('watch:phantom', function(done) {
+	process.env.NODE_ENV = 'test';
+	new karma.Server({
+		configFile: karmaConfig,
+		browsers: ['PhantomJS']
+	}, done).start();
+});
+
+// Remove temporary files
+gulp.task('clean:tmp', function(done) {
+	del(['tmp']).then(function() { done()});
 });
 
 gulp.task('lint', ['lint:src', 'lint:test']);
