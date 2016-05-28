@@ -11,7 +11,6 @@ const buble = require('rollup-plugin-buble');
 const multiEntry = require('rollup-plugin-multi-entry').default;
 const typeScript = require('rollup-plugin-typescript');
 const nodeResolve = require('rollup-plugin-node-resolve');
-const connect = require('gulp-connect');
 const karma = require('karma');
 const tsc = require('typescript');
 const tslint = require('gulp-tslint');
@@ -46,17 +45,17 @@ function bundle(format, entry) {
 	});
 }
 function cleanTmp(done) {
-	del(['tmp']).then(() => done());
+	del(['tmp']).then(function() { done()});
 }
 
 // Remove our temporary files
 gulp.task('clean:tmp', cleanTmp);
 
 
-const firstBuild = true;
+var firstBuild = true;
 
 // Set up a livereload environment for our spec runner `test/runner.html`
-gulp.task('browser', ['clean:tmp'], done => {
+gulp.task('browser', ['clean:tmp'], function(done) {
 
 	const testFiles = glob.sync('./test/**/*.ts')
 		.concat(glob.sync('./test/**/*.ts'));
@@ -76,7 +75,7 @@ gulp.task('browser', ['clean:tmp'], done => {
 				exclude: 'node_modules/**'
 			})
 		]
-	}).then(bundle => {
+	}).then(function(bundle) {
 		const result = bundle.generate({
 			format: 'umd',
 			moduleName: 'Sonai',
@@ -116,7 +115,7 @@ gulp.task('test:browser', function(done) {
 gulp.task('test', ['test:browser']);
 
 // Build a production bundle
-gulp.task('build:prod', () => {
+gulp.task('build:prod', function() {
 	process.env.NODE_ENV = 'production';
 	process.env.min = true;
 
@@ -127,7 +126,7 @@ gulp.task('build:prod', () => {
 });
 
 // Build a production bundle
-gulp.task('build:dev', () => {
+gulp.task('build:dev', function() {
 	process.env.NODE_ENV = 'development';
 	process.env.min = false;
 
@@ -137,21 +136,21 @@ gulp.task('build:dev', () => {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('lint:test', () =>
+gulp.task('lint:test', function() {
 	gulp.src('test/*.ts')
 		.pipe(tslint())
 		.pipe(tslint.report('prose', {
 			emitError: false
-		}))
-);
+		}));
+});
 
-gulp.task('lint:src', () =>
+gulp.task('lint:src', function() {
 	gulp.src('src/*.ts')
 		.pipe(tslint())
 		.pipe(tslint.report("prose", {
 			emitError: false
-		}))
-);
+		}));
+});
 
 gulp.task('lint', ['lint:src', 'lint:test']);
 gulp.task('build', ['build:prod', 'build:dev']);
