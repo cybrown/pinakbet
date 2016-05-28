@@ -1,19 +1,19 @@
 {
   "name": "pinakbet",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A starter kit to get you up and running with TypeScript, using Bublé as the ES2015 compiler ",
   "main": "index.js",
   "jsnext:main": "dist/pinakbet.js",
   "scripts": {
+    "build": "gulp build",
+    "build:prod": "cross-env NODE_ENV=production gulp build:prod",
+    "build:dev": "cross-env NODE_ENV=development gulp build:dev",
     "test": "gulp test",
     "test:chrome": "gulp test:chrome",
     "test:phantom": "gulp test:phantom",
     "watch": "gulp watch:chrome",
     "watch:chrome": "gulp watch:chrome",
     "watch:phantom": "gulp watch:phantom",
-    "build": "gulp build",
-    "build:prod": "gulp build:prod",
-    "build:dev": "gulp build:dev",
     "lint": "gulp lint",
     "lint:src": "gulp lint:src",
     "lint:test": "gulp lint:test",
@@ -90,6 +90,7 @@
     "sinon-chai": "^2.8.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
+    "cross-env": "1.0.7",
     "buble": "^0.10.2"
   }
 }

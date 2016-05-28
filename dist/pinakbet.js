@@ -1,5 +1,5 @@
 /*!
- * pinakbet v0.0.10
+ * pinakbet v0.0.11
  * (c) 2016 KFlash
  * Released under the MIT License.
  */
