@@ -53,7 +53,7 @@ function cleanTmp(done) {
 gulp.task('clean:tmp', cleanTmp);
 
 
-let firstBuild = true;
+const firstBuild = true;
 
 // Set up a livereload environment for our spec runner `test/runner.html`
 gulp.task('browser', ['clean:tmp'], done => {
