@@ -1,6 +1,6 @@
 {
   "name": "pinakbet",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A starter kit to get you up and running with TypeScript, using Bublé as the ES2015 compiler ",
   "main": "index.js",
   "jsnext:main": "dist/pinakbet.js",
@@ -47,6 +47,7 @@
     "karma-sinon-chai": "^1.2.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.26",
+    "coveralls": "^2.11.9",
     "merge2": "^1.0.2",
     "lolex": "1.5.0",
     "mkdirp": "^0.5.1",
