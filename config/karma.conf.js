@@ -76,7 +76,7 @@ module.exports = function (config) {
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['mocha', 'coverage', 'coveralls'],
+		reporters: ['mocha', 'coverage'/*, 'coveralls'*/],
 
 		browserDisconnectTimeout: 10000,
 		browserDisconnectTolerance: 2,
@@ -98,7 +98,7 @@ module.exports = function (config) {
 	};
 	if (process.env.TRAVIS) {
 		// Used by Travis to push coveralls info corretly to example coveralls.io
-		configuration.reporters = ['mocha', 'coverage', 'coveralls'];
+	//	configuration.reporters = ['mocha', 'coverage', 'coveralls'];
 	}
 	config.set(configuration);
 };
