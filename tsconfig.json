@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "system",
+    "moduleResolution": "node",
+    "target": "es6",
+    "jsx": "preserve",
+    "outDir": "./dist/",
+    "rootDir": ".",
+    "sourceMap": true,
+    "sourceRoot": ".",
+    "noImplicitAny": true,
+    "removeComments": false
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "examples",
+    "typings/globals",
+    "typings/index.d.ts",
+    "tests"
+  ],
+  "compileOnSave": false
+}
