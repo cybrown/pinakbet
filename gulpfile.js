@@ -113,6 +113,8 @@ gulp.task('test:browser', function(done) {
 	}
 );
 
+gulp.task('test', ['test:browser']);
+
 // Build a production bundle
 gulp.task('build:prod', () => {
 	process.env.NODE_ENV = 'production';
