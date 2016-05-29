@@ -23,7 +23,7 @@ const del = require('del');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const pkg = require('./package.json');
-const tsConfig = require("./tsconfig.json");
+const tscConfig = require("./tsconfig.json");
 const tlConfig = require("./tslint.js");
 const karmaConfig = path.resolve('config/karma.conf.js');
 
@@ -37,7 +37,7 @@ const copyright =
 	' * Released under the ' + pkg.license + ' License.\n' +
 	' */';
 
-
+// TypeScript compile
 function bundle(format, entry) {
 	return rollup({
 		entry: entry,
@@ -57,10 +57,9 @@ function bundle(format, entry) {
 					screw_ie8: true
 				}
 			}) : {},
-			multiEntry(),
 			json(),
 			typeScript(
-				Object.assign(tsConfig.compilerOptions, {
+				Object.assign(tscConfig.compilerOptions, {
 					typescript: tsc
 				})
 			),
@@ -96,8 +95,16 @@ function bundle(format, entry) {
 	});
 }
 
-function runKarma(browser, singlerun) {
+function runKarma(browser, singlerun, isKeptAnEyeOn) {
 	return function(done) {
+
+		if (isKeptAnEyeOn) {
+			console.log('=== Unit Test Watch Mode ===');
+			console.log('- It will autowatch the changed files and re-run the test');
+			console.log('- Press Cmd/Ctrl + C to exit and get the coverage result');
+			console.log('- Press Cmd/Ctrl + C again to close the TSC watch.');
+		}
+
 		process.env.NODE_ENV = 'test';
 		new karma.Server({
 				configFile: path.resolve('config/karma.conf.js'),
@@ -117,22 +124,43 @@ function runKarma(browser, singlerun) {
 function lint(files) {
 	return gulp.src(files)
 		.pipe(tslint())
-		.pipe(tslint.report('prose'));
+		.pipe(tslint.report('verbose', { emitError: false }));
 }
+
+gulp.task("build:es6", function() {
+	const ts = require("gulp-typescript");
+	const tslint = require("gulp-tslint");
+	const merge = require("merge2");
+
+	const result = gulp.src(["src/**/*.ts"])
+		//	.pipe(tslint())
+		//	.pipe(tslint.report("verbose", {
+		//		emitError: false,
+		//	}))
+		.pipe(ts(Object.assign(tscConfig.compilerOptions, {
+			typescript: require("typescript"),
+			target: "es6",
+			declaration: true
+		})));
+
+	return merge([
+		result.dts.pipe(gulp.dest("dist/typings")),
+		result.js.pipe(gulp.dest("dist/es6")),
+	]);
+});
 
 var firstBuild = true;
 
 // Set up a livereload environment for our spec runner `test/runner.html`
 gulp.task('browser', ['clean:tmp'], function(done) {
 
-	const testFiles = glob.sync('./test/**/*.ts')
-		//.concat(glob.sync('./config/typings/**/*.ts'));
+	const testFiles = glob.sync('./test/**/*.ts');
 	r.rollup({
 		entry: ['./config/setup/browser.js'].concat(testFiles),
 		plugins: [
 			multiEntry(),
 			typeScript(
-				Object.assign(tsConfig.compilerOptions, {
+				Object.assign(tscConfig.compilerOptions, {
 					typescript: tsc
 				})
 			),
@@ -189,7 +217,6 @@ gulp.task('build:dev', function() {
 		.pipe(gulp.dest('dist'));
 });
 
-
 // Build a production bundle
 gulp.task('build:iife', function() {
 	process.env.NODE_ENV = 'undefined';
@@ -213,12 +240,12 @@ gulp.task('build:es6', function() {
 });
 
 gulp.task('test', ['test:chrome']);
-gulp.task('test:chrome', runKarma('Chrome', true));
-gulp.task('test:phantom', runKarma('PhantomJS', true));
+gulp.task('test:chrome', runKarma('Chrome', true, true));
+gulp.task('test:phantom', runKarma('PhantomJS', true, true));
 gulp.task('watch', ['watch:chrome', 'lint']);
 gulp.task('watch:browser', ['watch:chrome', 'lint']);
-gulp.task('watch:chrome', runKarma('Chrome', false));
-gulp.task('watch:phantom', runKarma('PhantomJS', false));
+gulp.task('watch:chrome', runKarma('Chrome', false, true));
+gulp.task('watch:phantom', runKarma('PhantomJS', false, true));
 
 gulp.task('bump', function() {
 	gulp.src('./package.json')
@@ -226,9 +253,10 @@ gulp.task('bump', function() {
 		.pipe(gulp.dest('./'));
 });
 
+// clean the contents of the distribution directory
 gulp.task('clean', function(cb) {
 // delete the files
-	del(['dist']);
+	del(['dist/**/*']);
 });
 
 // Lint everything
