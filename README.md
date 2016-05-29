@@ -3,6 +3,10 @@
 [![Build Status](https://travis-ci.org/Kflash/pinakbet.svg?branch=master)](https://travis-ci.org/Kflash/pinakbet)
 [![CircleCI](https://circleci.com/gh/Kflash/pinakbet.svg?style=svg)](https://circleci.com/gh/Kflash/pinakbet)
 [![Coverage Status](https://coveralls.io/repos/github/Kflash/pinakbet/badge.svg?branch=master)](https://coveralls.io/github/Kflash/pinakbet?branch=master)
+[![npm version](https://badge.fury.io/js/pinakbet.svg)](https://badge.fury.io/js/pinakbet)
+[![npm downloads](https://img.shields.io/npm/dm/pinakbet.svg)](https://www.npmjs.org/package/pinakbet)
+[![npm](https://img.shields.io/npm/l/express.svg?style=flat-square)](https://github.com/kflash/pinakbet/blob/master/LICENSE.md)
+
 
 > A starter kit to get you up and running with TypeScript, using Bublé as the ES2015 compiler
 
@@ -44,5 +48,24 @@ $ npm run build                 # Build a minified and a non-minified version of
 * `npm run watch` - run all unit tests and watch files for changes
 * `npm run watch:chrome` - run all unit tests and watch files for changes with Chrome
 * `npm run watch:phantom` - run all unit tests and watch files for changes with PhantomJS
+* `npm run bump` - bump version number in `package.json`
+* `npm run browser` - runs browser unit tests in the browser.
 * `npm run dependencies:check` - shows a list over dependencies with a higher version number then the current one - if any
 * `npm run dependencies:upgrade` - automatically upgrade all devDependencies & dependencies, and update package.json
+
+
+# License
+
+The MIT License (MIT)
+
+Copyright (c) 2016 KFlash
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the
+Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

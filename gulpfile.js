@@ -1,10 +1,10 @@
 const gulp = require('gulp');
 const path = require('path');
 const glob = require('glob');
+const fs = require('fs');
 const rollup = require('rollup-stream');
 const r = require('rollup');
 const mkdirp = require('mkdirp');
-const fs = require('fs');
 const livereload = require('gulp-livereload');
 const uglify = require('rollup-plugin-uglify');
 const buble = require('rollup-plugin-buble');
@@ -17,6 +17,7 @@ const replace = require('rollup-plugin-replace');
 const karma = require('karma');
 const tsc = require('typescript');
 const tslint = require('gulp-tslint');
+const bump = require('gulp-bump');
 const del = require('del');
 const pkg = require('./package.json');
 const tsConfig = require("./tsconfig.json");
@@ -209,6 +210,12 @@ gulp.task('watch:chrome', function(done) {
 
 gulp.task('watch:phantom', function(done) {
 	runKarma('PhantomJS', false, done);
+});
+
+gulp.task('bump', function() {
+	gulp.src('./package.json')
+	.pipe(bump())
+	.pipe(gulp.dest('./'));
 });
 
 // Lint everything
