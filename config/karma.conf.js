@@ -19,7 +19,7 @@ module.exports = function (config) {
 			'mocha'
 		],
 		files: [
-			'test/**/*.ts'
+			'./test/specs/**/*.ts'
 		],
 		// Start these browsers, currently available:
 		// - Chrome
@@ -34,8 +34,8 @@ module.exports = function (config) {
 		// list of files to exclude
 		exclude: [],
 		preprocessors: {
-			'src/**/*.js': ['rollup'],
-			'test/**/*.ts': ['rollup']
+			'./src/**/*.ts': ['rollup'],
+			'./test/specs/**/*.ts': ['rollup']
 		},
 		rollupPreprocessor: {
 			rollup: {
@@ -54,23 +54,21 @@ module.exports = function (config) {
 					}),
 					istanbul({
 						include: ['**/*.ts'],
+						ignore: ['**/node_modules/**', '**/test/**'],
 						exclude: ['test/**/*.ts']
 					})
 				]
 			},
 			bundle: {
-				intro: '(function() {',
-				outro: '})();',
 				sourceMap: false
 			}
 		},
 		coverageReporter: {
+			dir : 'coverage/',
 			reporters: [{
-				type: 'text',
-				dir: '../coverage'
+				type: 'text'
 			}, {
-				type: 'lcov',
-				dir: '../coverage'
+				type: 'lcov'
 			}]
 		},
 		// test results reporter to use
