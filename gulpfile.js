@@ -93,6 +93,28 @@ function bundle(format, entry) {
 	});
 }
 
+function runKarma(browser, singlerun, done) {
+	new karma.Server({
+			configFile: karmaConfig,
+			singleRun: singlerun,
+			browserNoActivityTimeout: 240000,
+			captureTimeout: 120000
+		},
+		function(err) {
+			done();
+			process.exit(err ? 1 : 0);
+		})
+		.start();
+}
+
+function lint(files) {
+	return gulp.src(files)
+		.pipe(tslint())
+		.pipe(tslint.report("prose", {
+			emitError: false
+		}));
+}
+
 var firstBuild = true;
 
 // Set up a livereload environment for our spec runner `test/runner.html`
@@ -143,38 +165,6 @@ gulp.task('browser', ['clean:tmp'], function(done) {
 	}).catch(console.error);
 });
 
-gulp.task('test:browser', function(done) {
-		process.env.NODE_ENV = 'test';
-		new karma.Server({
-			configFile: karmaConfig,
-			singleRun: true,
-			browsers: ['Chrome']
-		}, done).start();
-	}
-);
-
-gulp.task('test:chrome', function(done) {
-		process.env.NODE_ENV = 'test';
-		new karma.Server({
-			configFile: karmaConfig,
-			singleRun: true,
-			browsers: ['Chrome']
-		}, done).start();
-	}
-);
-
-gulp.task('test:phantom', function(done) {
-		process.env.NODE_ENV = 'test';
-		new karma.Server({
-			configFile: karmaConfig,
-			singleRun: true,
-			browsers: ['PhantomJS']
-		}, done).start();
-	}
-);
-
-gulp.task('test', ['test:browser']);
-
 // Build a production bundle
 gulp.task('build:prod', function() {
 	process.env.NODE_ENV = 'production';
@@ -197,39 +187,36 @@ gulp.task('build:dev', function() {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('lint:test', function() {
-	gulp.src('test/*.ts')
-		.pipe(tslint())
-		.pipe(tslint.report('prose', {
-			emitError: false
-		}));
+
+gulp.task('test:browser', function(done) {
+	runKarma('Chrome', true, done);
 });
 
-gulp.task('lint:src', function() {
-	gulp.src('src/*.ts')
-		.pipe(tslint())
-		.pipe(tslint.report("prose", {
-			emitError: false
-		}));
+gulp.task('test:chrome', function(done) {
 });
+
+gulp.task('test:phantom', function(done) {
+	runKarma('PhantomJS', true, done);
+});
+
+gulp.task('test', ['test:browser']);
 
 gulp.task('watch:browser', ['watch:chrome', 'watch:phantom']);
 
 gulp.task('watch:chrome', function(done) {
-	process.env.NODE_ENV = 'test';
-	new karma.Server({
-		configFile: karmaConfig,
-		browsers: ['Chrome']
-	}, done).start();
+	runKarma('Chrome', false, done);
 });
 
 gulp.task('watch:phantom', function(done) {
-	process.env.NODE_ENV = 'test';
-	new karma.Server({
-		configFile: karmaConfig,
-		browsers: ['PhantomJS']
-	}, done).start();
+	runKarma('PhantomJS', false, done);
 });
+
+// Lint everything
+gulp.task('lint', ['lint:src', 'lint:test']);
+// Lint the source files
+gulp.task('lint:src', function() { lint('src/**/*.ts')});
+// Lint the test files
+gulp.task('lint:test', function() { lint('test/*.ts')});
 
 // Remove temporary files
 gulp.task('clean:tmp', function(done) {
