@@ -29,7 +29,7 @@ module.exports = function (config) {
 		// - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
 		// - PhantomJS
 		// - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-		// browsers: ['Chrome'],
+		browsers: ['Chrome'],
 
 		// list of files to exclude
 		exclude: [],
@@ -96,9 +96,9 @@ module.exports = function (config) {
 		// if true, Karma captures browsers, runs the tests and exits
 		//	singleRun: true
 	};
-	//if (process.env.TRAVIS) {
+	if (process.env.TRAVIS) {
 		 //Used by Travis to push coveralls info corretly to example coveralls.io
-	//	configuration.reporters = ['mocha', 'coverage', 'coveralls'];
-		//}
+		configuration.reporters = ['mocha', 'coverage', 'coveralls'];
+	}
 	config.set(configuration);
 };
