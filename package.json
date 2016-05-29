@@ -1,6 +1,6 @@
 {
   "name": "pinakbet",
-  "version": "0.1.25",
+  "version": "0.1.27",
   "description": "TypeScript starter kit, using Rollup, and Bublé",
   "main": "index.js",
   "jsnext:main": "dist/pinakbet.es6.js",
@@ -73,7 +73,6 @@
     "karma-rollup-preprocessor": "^2.0.2",
     "karma-sinon": "^1.0.5",
     "karma-sinon-chai": "^1.2.0",
-    "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.26",
     "karma-coveralls": "^1.1.2",
     "coveralls": "^2.11.9",

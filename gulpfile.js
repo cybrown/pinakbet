@@ -7,6 +7,7 @@ const rollup = require('rollup-stream');
 const r = require('rollup');
 const mkdirp = require('mkdirp');
 const livereload = require('gulp-livereload');
+const gts = require('gulp-typescript');
 const uglify = require('rollup-plugin-uglify');
 const buble = require('rollup-plugin-buble');
 const multiEntry = require('rollup-plugin-multi-entry').default;
@@ -19,6 +20,7 @@ const replace = require('rollup-plugin-replace');
 const karma = require('karma');
 const tsc = require('typescript');
 const tslint = require('gulp-tslint');
+const mocha = require('gulp-mocha');
 const bump = require('gulp-bump');
 const del = require('del');
 const source = require('vinyl-source-stream');
@@ -95,15 +97,8 @@ function bundle(format, entry) {
 	});
 }
 
-function runKarma(browser, singlerun, isKeptAnEyeOn) {
+function runKarma(browser, singlerun) {
 	return function(done) {
-
-		if (isKeptAnEyeOn) {
-			console.log('=== Unit Test Watch Mode ===');
-			console.log('- It will autowatch the changed files and re-run the test');
-			console.log('- Press Cmd/Ctrl + C to exit and get the coverage result');
-			console.log('- Press Cmd/Ctrl + C again to close the TSC watch.');
-		}
 
 		process.env.NODE_ENV = 'test';
 		new karma.Server({
@@ -116,8 +111,7 @@ function runKarma(browser, singlerun, isKeptAnEyeOn) {
 			function(err) {
 				done();
 				process.exit(err ? 1 : 0);
-			})
-			.start();
+			}).start();
 	}
 }
 
@@ -137,7 +131,7 @@ var firstBuild = true;
 // Set up a livereload environment for our spec runner `test/runner.html`
 gulp.task('browser', ['clean:tmp'], function(done) {
 
-	const testFiles = glob.sync('./test/**/*.ts');
+	const testFiles = glob.sync('./test/specs/**/*.ts');
 	r.rollup({
 		entry: ['./config/setup/browser.js'].concat(testFiles),
 		plugins: [
