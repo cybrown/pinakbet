@@ -94,10 +94,29 @@ function bundle(format, entry) {
 	});
 }
 
-function runKarma(browser, singlerun, done) {
+function runKarma(browser, singlerun) {
+	return function(done) {
+		process.env.NODE_ENV = 'test';
+		new karma.Server({
+				configFile: path.resolve('config/karma.conf.js'),
+				singleRun: singlerun,
+				browserNoActivityTimeout: 240000,
+				captureTimeout: 120000,
+				browsers: [browser]
+			},
+			function(err) {
+				done();
+				process.exit(err ? 1 : 0);
+			})
+			.start();
+	}
+}
+
+function rudnKarma(browser, singlerun, done) {
 	new karma.Server({
 			configFile: karmaConfig,
 			singleRun: singlerun,
+			browser: browser,
 			browserNoActivityTimeout: 240000,
 			captureTimeout: 120000
 		},
@@ -188,29 +207,15 @@ gulp.task('build:dev', function() {
 		.pipe(gulp.dest('dist'));
 });
 
-
-gulp.task('test:browser', function(done) {
-	runKarma('Chrome', true, done);
-});
-
-gulp.task('test:chrome', function(done) {
-});
-
-gulp.task('test:phantom', function(done) {
-	runKarma('PhantomJS', true, done);
-});
-
-gulp.task('test', ['test:browser']);
+gulp.task('test', ['test:chrome', 'test:phantom']);
+gulp.task('test:chrome', runKarma('Chrome', true));
+gulp.task('test:phantom', runKarma('PhantomJS', true));
 
 gulp.task('watch:browser', ['watch:chrome', 'watch:phantom']);
 
-gulp.task('watch:chrome', function(done) {
-	runKarma('Chrome', false, done);
-});
+gulp.task('watch:chrome', runKarma('Chrome', false));
+gulp.task('watch:phantom', runKarma('PhantomJS', false));
 
-gulp.task('watch:phantom', function(done) {
-	runKarma('PhantomJS', false, done);
-});
 
 gulp.task('bump', function() {
 	gulp.src('./package.json')
