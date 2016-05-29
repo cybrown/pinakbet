@@ -32,7 +32,11 @@ addons:
       - google-chrome-stable
 
 before_install:
-  - "nvm use $TRAVIS_NODE_VERSION"
+  # Used by karma and karma-chrome-launcher
+  - "export CHROME_BIN=/usr/bin/google-chrome"
+  # used by xvfb that is used by Chrome
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 
 install:
   # Check the size of caches
@@ -48,22 +52,15 @@ install:
   # Install npm dependencies and ensure that npm cache is not stale
   - npm install
 
-before_install:
-  # Used by karma and karma-chrome-launcher
-  - "export CHROME_BIN=/usr/bin/google-chrome"
-  # used by xvfb that is used by Chrome
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-
 notifications:
   email: true
 
 script:
-  #- npm run test
+  - npm run test
 
-after_success:
+after_script:
  # Upload to coveralls, but don't _fail_ if coveralls is down.
-  - ./node_modules/karma/bin/karma start
+ # - ./node_modules/karma/bin/karma start
   - cat coverage/lcov.info | node_modules/.bin/coveralls || echo "Coveralls upload failed"
   - node node_modules/lcov-filter/index.js lcov.info config | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
   
