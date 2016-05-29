@@ -211,7 +211,6 @@ gulp.task('lint', ['lint:src', 'lint:test']);
 gulp.task('lint:src', function() { lint('src/**/*.ts')});
 // Lint the test files
 gulp.task('lint:test', function() { lint('test/*.ts')});
-
 // Remove temporary files
 gulp.task('clean:tmp', function(done) {
 	del(['tmp']).then(function() { done()});
