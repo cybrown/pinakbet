@@ -94,11 +94,11 @@ module.exports = function (config) {
 		autoWatch: false,
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
-		singleRun: true
+		//	singleRun: true
 	};
-	if (process.env.TRAVIS) {
+	//if (process.env.TRAVIS) {
 		 //Used by Travis to push coveralls info corretly to example coveralls.io
-		configuration.reporters = ['mocha', 'coverage', 'coveralls'];
-	}
+	//	configuration.reporters = ['mocha', 'coverage', 'coveralls'];
+		//}
 	config.set(configuration);
 };
