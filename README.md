@@ -40,6 +40,8 @@ $ npm run build                 # Build a minified and a non-minified version of
 * `npm run build` - build task that generate a minified and a non-minified script
 * `npm run build:prod` - build task that generate a production bundle
 * `npm run build:dev` - build task that generate a development bundle
+* `npm run build:iife` - build task that generate a iife bundle
+* `npm run build:es6` - build task that generate a es2015 bundle
 * `npm run lint:src` - lint the source
 * `npm run lint:tests` - lint the unit tests
 * `npm run test` - runs unit tests for both node and the browser.

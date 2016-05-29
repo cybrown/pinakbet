@@ -44,6 +44,8 @@ install:
   - du -sh ./node_modules || true
   # Install version of npm that we are locked against
   - npm install -g npm@3
+  # add node.js module for TypeScript type definition
+  - npm install tsd@next -g
   # - npm config set registry http://23.251.144.68
   # Disable the spinner, it looks bad on Travis
   - npm config set spin false

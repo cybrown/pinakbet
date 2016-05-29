@@ -21,15 +21,15 @@ module.exports = {
 		'curly': ERROR,
 		'eofline': OFF,
 		'forin': ERROR,
-		'indent': [ERROR, 'spaces'],
+		'indent': [ERROR, 4],
 		'label-position': ERROR,
 		'label-undefined': ERROR,
 		'max-line-length': [ ERROR, 140],
 		'member-access': OFF,
 		'member-ordering': [OFF],
 		'no-arg': ERROR,
-		'no-bitwise': OFF,
-		'no-console': [ ERROR, 'info', 'time', 'timeEnd', 'trace'],
+		'no-bitwise': ERROR,
+		'no-console': [ ERROR, 'debug', 'info', 'time', 'timeEnd', 'trace'],
 		'no-construct': ERROR,
 		'no-debugger': ERROR,
 		'no-duplicate-key': ERROR,
@@ -60,7 +60,7 @@ module.exports = {
 		'one-variable-per-declaration': [ERROR,
 			'ignore-for-loop'
 		],
-		'quotemark': [ERROR, 'single', 'avoid-escape'],
+		'quotemark': [ERROR, 'single'],
 		'radix': ERROR,
 		'semicolon': [ERROR, 'always'],
 		'switch-default': ERROR,
@@ -68,7 +68,7 @@ module.exports = {
 			'singleline': 'never',
 			'multiline': 'always'
 		}],
-		'triple-equals': [ERROR, 'allow-null-check', 'allow-undefined-check'],
+		'triple-equals': [ERROR, '"allow-null-check'],
 		'typedef': [
 			true,
 			'call-signature',
@@ -90,8 +90,7 @@ module.exports = {
 			'check-branch',
 			'check-decl',
 			'check-operator',
-			'check-separator',
-			'check-type'
+			'check-separator'
 		]
 	}
 };

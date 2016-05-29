@@ -18,6 +18,4 @@ describe('Pinakbet', () => {
 
         expect(Pinakbet.greeter(user)).to.eql('Hello, Jon User');
     });
-
-  //  greeter
 });

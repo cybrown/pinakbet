@@ -14,8 +14,8 @@ module.exports = function (config) {
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
 		frameworks: [
 			'sinon-chai',
-			//'sinon',
-			//'chai',
+			'sinon',
+			'chai',
 			'mocha'
 		],
 		files: [
@@ -74,7 +74,7 @@ module.exports = function (config) {
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['mocha', 'coverage', 'coveralls'],
+		reporters: ['mocha', 'coverage'],
 
 		browserDisconnectTimeout: 10000,
 		browserDisconnectTolerance: 2,
@@ -92,7 +92,7 @@ module.exports = function (config) {
 		autoWatch: false,
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
-		//	singleRun: true
+		singleRun: true
 	};
 	if (process.env.TRAVIS) {
 		 //Used by Travis to push coveralls info corretly to example coveralls.io

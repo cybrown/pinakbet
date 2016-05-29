@@ -11,6 +11,7 @@ const buble = require('rollup-plugin-buble');
 const multiEntry = require('rollup-plugin-multi-entry').default;
 const typeScript = require('rollup-plugin-typescript');
 const nodeResolve = require('rollup-plugin-node-resolve');
+const json = require('rollup-plugin-json');
 const filesize = require('rollup-plugin-filesize');
 const commonjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
@@ -19,12 +20,13 @@ const tsc = require('typescript');
 const tslint = require('gulp-tslint');
 const bump = require('gulp-bump');
 const del = require('del');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
 const pkg = require('./package.json');
 const tsConfig = require("./tsconfig.json");
 const tlConfig = require("./tslint.js");
 const karmaConfig = path.resolve('config/karma.conf.js');
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
+const gulpConfig = require('./gulpfile.config');
 
 /*
  * Banner
@@ -56,15 +58,16 @@ function bundle(format, entry) {
 					screw_ie8: true
 				}
 			}) : {},
+			multiEntry(),
+			json(),
 			typeScript(
 				Object.assign(tsConfig.compilerOptions, {
-					typescript: tsc,
-					target: 'es6',
-					module: 'es6',
-					declaration: false
+					typescript: tsc
 				})
 			),
-			buble({}),
+			buble({
+				exclude: 'node_modules/**'
+			}),
 			nodeResolve({
 				// use "jsnext:main" if possible
 				// – see https://github.com/rollup/rollup/wiki/jsnext:main
@@ -115,9 +118,7 @@ function runKarma(browser, singlerun) {
 function lint(files) {
 	return gulp.src(files)
 		.pipe(tslint())
-		.pipe(tslint.report("prose", {
-			emitError: false
-		}));
+		.pipe(tslint.report('prose'));
 }
 
 var firstBuild = true;
@@ -126,17 +127,14 @@ var firstBuild = true;
 gulp.task('browser', ['clean:tmp'], function(done) {
 
 	const testFiles = glob.sync('./test/**/*.ts')
-		.concat(glob.sync('./test/**/*.ts'));
+		//.concat(glob.sync('./config/typings/**/*.ts'));
 	r.rollup({
 		entry: ['./config/setup/browser.js'].concat(testFiles),
 		plugins: [
 			multiEntry(),
 			typeScript(
 				Object.assign(tsConfig.compilerOptions, {
-					typescript: tsc,
-					target: 'es6',
-					module: 'es6',
-					declaration: false
+					typescript: tsc
 				})
 			),
 			buble({
@@ -181,7 +179,7 @@ gulp.task('build:prod', function() {
 		.pipe(gulp.dest('dist'));
 });
 
-// Build a production bundle
+// Build a development bundle
 gulp.task('build:dev', function() {
 	process.env.NODE_ENV = 'development';
 	process.env.min = false;
@@ -192,24 +190,53 @@ gulp.task('build:dev', function() {
 		.pipe(gulp.dest('dist'));
 });
 
+
+// Build a production bundle
+gulp.task('build:iife', function() {
+	process.env.NODE_ENV = 'undefined';
+	process.env.min = false;
+
+	return bundle('iife', 'src/index.ts')
+		.pipe(source(pkg.name + '.iife.js'))
+		.pipe(buffer())
+		.pipe(gulp.dest('dist'));
+});
+
+// Build a production bundle
+gulp.task('build:es6', function() {
+	process.env.NODE_ENV = 'undefined';
+	process.env.min = false;
+
+	return bundle('es6', 'src/index.ts')
+		.pipe(source(pkg.name + '.es6.js'))
+		.pipe(buffer())
+		.pipe(gulp.dest('dist'));
+});
+
 gulp.task('test', ['test:chrome']);
 gulp.task('test:chrome', runKarma('Chrome', true));
 gulp.task('test:phantom', runKarma('PhantomJS', true));
-gulp.task('watch:browser', ['watch:chrome']);
+gulp.task('watch', ['watch:chrome', 'lint']);
+gulp.task('watch:browser', ['watch:chrome', 'lint']);
 gulp.task('watch:chrome', runKarma('Chrome', false));
 gulp.task('watch:phantom', runKarma('PhantomJS', false));
 
 gulp.task('bump', function() {
 	gulp.src('./package.json')
-	.pipe(bump())
-	.pipe(gulp.dest('./'));
+		.pipe(bump())
+		.pipe(gulp.dest('./'));
+});
+
+gulp.task('clean', function(cb) {
+// delete the files
+	del(['dist']);
 });
 
 // Lint everything
 gulp.task('lint', ['lint:src', 'lint:test']);
-// Lint the source files
+// Lint all TypeScript source files.
 gulp.task('lint:src', function() { lint('src/**/*.ts')});
-// Lint the test files
+// Lint all TypeScript test files.
 gulp.task('lint:test', function() { lint('test/*.ts')});
 // Remove temporary files
 gulp.task('clean:tmp', function(done) {
@@ -217,5 +244,5 @@ gulp.task('clean:tmp', function(done) {
 });
 
 gulp.task('lint', ['lint:src', 'lint:test']);
-gulp.task('build', ['build:prod', 'build:dev']);
-gulp.task('default', ['build']);
+gulp.task('build', ['build:prod', 'build:dev', 'build:es6']);
+gulp.task('default', ['lint', 'test:chrome']);
