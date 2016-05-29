@@ -71,20 +71,20 @@ To keep watching the common test suites that you are working on, simply do `npm 
 
 # FAQ
 
-## Any plans for `Mocha` tests for the `node.js environment`?
+### Any plans for `Mocha` tests for the `node.js environment`?
 
 Not atm. Feel free to send a PR.
 
-## Why isn't a sourcemap generated for the bundle?
+### Why isn't a sourcemap generated for the bundle?
 
 Because this is not set by default. It's very simple to add it. This boilerplate are using
 [`rollup-stream`](https://www.npmjs.com/package/rollup-stream), so simply follow `example #2` in the readme on their Github repo to set it up.
 
-## What's the browser compatibility?
+### What's the browser compatibility?
 
 As a rule of thumb, Babel works best in IE9 and above.
 
-## What's the cost of transpiling?
+### What's the cost of transpiling?
 
 A thorough analysis of this question can be found [here](https://github.com/samccone/The-cost-of-transpiling-es2015-in-2016).
 
