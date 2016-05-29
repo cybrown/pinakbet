@@ -26,7 +26,6 @@ const pkg = require('./package.json');
 const tsConfig = require("./tsconfig.json");
 const tlConfig = require("./tslint.js");
 const karmaConfig = path.resolve('config/karma.conf.js');
-const gulpConfig = require('./gulpfile.config');
 
 /*
  * Banner
