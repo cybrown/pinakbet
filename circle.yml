@@ -1,0 +1,25 @@
+#
+# Build configuration for Circle CI
+#
+
+machine:
+  node:
+    version: 'stable'
+
+# whitelisted branches
+general:
+  branches:
+    only:
+      - master
+      - dev
+
+# From for occasional ELIFECYCLE errors compiling microtime
+# https://discuss.circleci.com/t/using-node-js-4-0-on-circleci/26
+dependencies:
+   pre:
+     - npm install -g npm
+   override:
+      - npm install
+test:
+  override:
+    - bash ./config/circle-ci/ci.sh
