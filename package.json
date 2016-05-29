@@ -1,6 +1,6 @@
 {
   "name": "pinakbet",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A starter kit to get you up and running with TypeScript, using Bublé as the ES2015 compiler ",
   "main": "index.js",
   "jsnext:main": "dist/pinakbet.js",

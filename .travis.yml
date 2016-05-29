@@ -59,7 +59,7 @@ notifications:
   email: true
 
 script:
-  - gulp test:chrome
+  - npm run test
 
 after_success:
  # Upload to coveralls, but don't _fail_ if coveralls is down.

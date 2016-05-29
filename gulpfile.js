@@ -112,21 +112,6 @@ function runKarma(browser, singlerun) {
 	}
 }
 
-function rudnKarma(browser, singlerun, done) {
-	new karma.Server({
-			configFile: karmaConfig,
-			singleRun: singlerun,
-			browser: browser,
-			browserNoActivityTimeout: 240000,
-			captureTimeout: 120000
-		},
-		function(err) {
-			done();
-			process.exit(err ? 1 : 0);
-		})
-		.start();
-}
-
 function lint(files) {
 	return gulp.src(files)
 		.pipe(tslint())
@@ -207,15 +192,12 @@ gulp.task('build:dev', function() {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('test', ['test:chrome', 'test:phantom']);
+gulp.task('test', ['test:chrome']);
 gulp.task('test:chrome', runKarma('Chrome', true));
 gulp.task('test:phantom', runKarma('PhantomJS', true));
-
-gulp.task('watch:browser', ['watch:chrome', 'watch:phantom']);
-
+gulp.task('watch:browser', ['watch:chrome']);
 gulp.task('watch:chrome', runKarma('Chrome', false));
 gulp.task('watch:phantom', runKarma('PhantomJS', false));
-
 
 gulp.task('bump', function() {
 	gulp.src('./package.json')
