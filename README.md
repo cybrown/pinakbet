@@ -8,7 +8,7 @@
 [![npm](https://img.shields.io/npm/l/express.svg?style=flat-square)](https://github.com/kflash/pinakbet/blob/master/LICENSE.md)
 
 
-> A starter kit to get you up and running with TypeScript, using Bublé as the ES2015 compiler
+> TypeScript starter kit, using Rollup, and Bublé
 
 ## Features
 
