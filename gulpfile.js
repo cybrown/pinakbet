@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
+const stylish = require('gulp-tslint-stylish');
 const rollup = require('rollup-stream');
 const r = require('rollup');
 const mkdirp = require('mkdirp');
@@ -23,8 +24,7 @@ const del = require('del');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const pkg = require('./package.json');
-const tscConfig = require("./tsconfig.json");
-const tlConfig = require("./tslint.js");
+const tscConfig = require('./tsconfig.json');
 const karmaConfig = path.resolve('config/karma.conf.js');
 
 /*
@@ -124,30 +124,13 @@ function runKarma(browser, singlerun, isKeptAnEyeOn) {
 function lint(files) {
 	return gulp.src(files)
 		.pipe(tslint())
-		.pipe(tslint.report('verbose', { emitError: false }));
+		.pipe(tslint.report(stylish, {
+			emitError: false,
+			sort: true,
+			bell: true,
+			fullPath: true
+		}));
 }
-
-gulp.task("build:es6", function() {
-	const ts = require("gulp-typescript");
-	const tslint = require("gulp-tslint");
-	const merge = require("merge2");
-
-	const result = gulp.src(["src/**/*.ts"])
-		//	.pipe(tslint())
-		//	.pipe(tslint.report("verbose", {
-		//		emitError: false,
-		//	}))
-		.pipe(ts(Object.assign(tscConfig.compilerOptions, {
-			typescript: require("typescript"),
-			target: "es6",
-			declaration: true
-		})));
-
-	return merge([
-		result.dts.pipe(gulp.dest("dist/typings")),
-		result.js.pipe(gulp.dest("dist/es6")),
-	]);
-});
 
 var firstBuild = true;
 
@@ -185,7 +168,7 @@ gulp.task('browser', ['clean:tmp'], function(done) {
 		if (firstBuild) {
 			// we listen to both the browser and node.js unit tests
 			livereload.listen({port: 35729, host: 'localhost', start: true});
-			gulp.watch(['src/**/*.ts', 'test/**/*.ts'], ['browser']);
+			gulp.watch(['src/**/*.ts', 'test/**/*.ts', 'tslint.json', 'gulpfile.js', 'tsconfig'], ['browser', 'lint']);
 		} else {
 			livereload.reload('./tmp/__specs.js');
 		}

@@ -1,3 +1,11 @@
+# v.0.1.25
+
+- auto-linting in browser tests
+- renamed tslint.js to tslint.json
+- improved linting
+- speaker beep if errors
+- readme changes
+
 # v.0.1.23
 
 - changed tslint config to match with AngularJS
