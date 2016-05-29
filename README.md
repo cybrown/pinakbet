@@ -55,13 +55,13 @@ $ npm run build                 # Build a minified and a non-minified version of
 * `npm run dependencies:check` - shows a list over dependencies with a higher version number then the current one - if any
 * `npm run dependencies:upgrade` - automatically upgrade all devDependencies & dependencies, and update package.json
 
-# Browser tests and type checking
+## Browser tests and type checking
 
 The browser spec runner - `./config.runner.html` - can be opened in a browser to run your tests. For it to work, you must first run `gulp browser`. This will set up a watch task that will automatically refresh the tests when your scripts, or the tests, change.
 
 `TSLint` are executed on every change and will make a sound in your speaker if any linting errors.
 
-# Testing environment
+## Testing environment
 
 This project uses `Mocha` to run your unit tests, it uses Karma as the test runner, it enables the feature that you are able to render your tests to the browser (e.g: Firefox, Chrome etc.).
 
@@ -69,7 +69,7 @@ To add a unit test, simply create a `.js` inside the ~../test/specs/ folder. Kar
 
 To keep watching the common test suites that you are working on, simply do `npm run watch` or `gulp watch`.
 
-# FAQ
+## FAQ
 
 ### Any plans for `Mocha` tests for the `node.js environment`?
 
@@ -88,7 +88,7 @@ As a rule of thumb, Babel works best in IE9 and above.
 
 A thorough analysis of this question can be found [here](https://github.com/samccone/The-cost-of-transpiling-es2015-in-2016).
 
-# License
+## License
 
 The MIT License (MIT)
 
