@@ -57,7 +57,7 @@ $ npm run build                 # Build a minified and a non-minified version of
 
 # Browser tests and type checking
 
-The browser spec runner - `./config.runner.html` - can be opened in a browser to run your tests. For it to work, you must first run gulp browser. This will set up a watch task that will automatically refresh the tests when your scripts, or the tests, change.
+The browser spec runner - `./config.runner.html` - can be opened in a browser to run your tests. For it to work, you must first run `gulp browser`. This will set up a watch task that will automatically refresh the tests when your scripts, or the tests, change.
 
 `TSLint` are executed on every change and will make a sound in your speaker if any linting errors.
 
