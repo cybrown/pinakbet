@@ -45,7 +45,7 @@ $ npm run build                 # Build a minified and a non-minified version of
 * `npm run lint:src` - lint the source
 * `npm run lint:tests` - lint the unit tests
 * `npm run test` - runs unit tests for both node and the browser.
-* `npm run tes:chromet` - runs unit tests with Chrome.
+* `npm run test:chrome` - runs unit tests with Chrome.
 * `npm run test:phantom` - runs unit tests with PhantomJS.
 * `npm run watch` - run all unit tests and watch files for changes
 * `npm run watch:chrome` - run all unit tests and watch files for changes with Chrome
