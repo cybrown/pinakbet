@@ -1,6 +1,6 @@
 {
   "name": "pinakbet",
-  "version": "0.1.27",
+  "version": "0.2.0",
   "description": "TypeScript starter kit, using Rollup, and Bublé",
   "main": "index.js",
   "jsnext:main": "dist/pinakbet.es6.js",
@@ -26,6 +26,10 @@
     "postpublish": "git push origin master --follow-tags",
     "test:browser": "./node_modules/.bin/karma start config/karma.conf.js --no-auto-watch --single-run"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kflash/pinakbet"
+  },
   "keywords": [
     "typescript",
     "ts",
@@ -35,6 +39,7 @@
     "buble",
     "bundle",
     "workflow",
+    "livereload",
     "boilerplate",
     "extensible",
     "angular",
@@ -105,10 +110,10 @@
     "sinon-chai": "^2.8.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "cross-env": "1.0.8",
-    "buble": "^0.10.2"
+    "cross-env": "1.0.8"
   },
-  "engines": {
-    "node": ">= 5.4.1 < 7"
+  "devEngines": {
+    "node": "4.x || 5.x || 6.x",
+    "npm": "3.x"
   }
 }
